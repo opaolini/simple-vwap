@@ -7,7 +7,7 @@ import time
 import csv
 
 # Reference points
-SYMBOLS = ['bitstampUSD', 'bitfinexUSD']
+SYMBOLS = ['bitfinexUSD']
 
 
 def get_timestamp(day, month, year=2015, hour=8, minute=0, second=0):
@@ -35,7 +35,7 @@ def parse_csv(result):
     return t
 
 
-def calc_vwap(t_array, tf=60 * 60):
+def calc_vwap(t_array, tf=60 * 15):
     """
     Calculates VWAP from trades array.
 
@@ -58,7 +58,7 @@ def fetch_data(symbols, start):
         t_array += parse_csv(r.text)
     return t_array
 
-start = get_timestamp(4, 5)  # Fourth of May 2015 8:00 AM
+start = get_timestamp(27, 5, hour=15, minute=25)  # Start Date: 27.05.2015 15:25
 data = fetch_data(SYMBOLS, start)
-vwap = calc_vwap(data)
+vwap = calc_vwap(data, 60 * 10)  # 10 minute timewindow, effectively - 15:25-15:35
 print("VWAP: %0.2f" % vwap)
